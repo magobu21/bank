@@ -1,0 +1,29 @@
+#APLICACIÓN CONSULTA:
+#
+#Entrega la información de cuentas con la cedula del cliente como entrada.
+#
+#El ID de operación es 2
+#
+from flask import Flask, render_template, request, redirect, url_for, flash
+from datetime import datetime
+from flask.wrappers import Request
+import pymysql
+import json
+
+app = Flask(__name__)
+
+@app.route('/consulta/<cliente>', methods = ['POST', 'GET'])
+def consulta(cliente):
+    miConexion = pymysql.connect( host='mysql', user= 'root', passwd='secret', port=3306, db='banco')
+    cur = miConexion.cursor()
+    cur.execute( "SELECT cuenta_id, cuenta_tip, cuenta_monto FROM cuentas WHERE cliente_cc=" + cliente)
+    for monto in cur.fetchall() :
+        a=1
+    miConexion.close()
+    return(monto)
+    json.dumps(monto)
+    
+    #return render_template('output.html', contact = monto[0])
+    
+if __name__ == "__main__":
+    app.run(host='0.0.0.0',debug=True)
